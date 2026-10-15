@@ -1,4 +1,4 @@
-/*
+
   Project: AI and IoT-Based Smart Irrigation System
   Board: ESP32 DevKit
   IDE: Arduino IDE
@@ -10,12 +10,7 @@
   4. Connects to Wi-Fi and provides a monitoring webpage.
   5. Provides a JSON status endpoint.
 
-  IMPORTANT:
-  - Verify wiring and relay logic before powering hardware.
-  - Calibrate the sensor thresholds for your sensor.
-  - This example assumes higher ADC readings mean drier soil.
-  - Never power a pump directly from an ESP32 GPIO.
-*/
+  
 
 #include <WiFi.h>
 #include <WebServer.h>
