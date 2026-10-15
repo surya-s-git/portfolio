@@ -13,7 +13,7 @@ REVA University, Bengaluru
 ## 🛠️ Technical Skills
 
 - **Programming:** C, C++, Python
-- **Engineering Tools:** MATLAB, Simulink, AutoCAD, Arduino IDE, Microsoft Excel
+- **Engineering Tools:** MATLAB, Simulink, AutoCAD, Arduino IDE, SolidWorks
 - **Domains:** Power Electronics, Electrical Machines, Electric Vehicles, Embedded Systems, VLSI
 - **Other Skills:** Problem Solving, Teamwork, Communication, Analytical Thinking
 
