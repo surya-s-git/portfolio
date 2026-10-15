@@ -2,43 +2,45 @@ Electric Vehicle Design & Development
 
 Project Overview
 
-This project involved the practical design and development of an electric vehicle through hands-on workshop activities. It focused on understanding EV components, assembling mechanical and electrical systems, and learning how the vehicle operates.
+A hands-on engineering project focused on the practical design, assembly, and development of a real electric vehicle in a workshop environment.
 
-Objectives
+Project Objectives
 
-- Gain practical experience in electric vehicle development.
-- Understand the integration of electrical and mechanical components.
-- Learn about the battery, electric motor, motor controller, and drivetrain.
-- Develop hands-on workshop skills through vehicle assembly and testing.
+- Design and develop a functional electric vehicle.
+- Understand the integration of mechanical and electrical systems.
+- Gain practical experience working with EV components.
+- Learn how electrical power is converted into vehicle motion.
 
 Practical Work
 
-- Participated in the vehicle design and development process.
-- Worked with electric vehicle components and their integration.
-- Gained practical exposure to workshop assembly procedures.
-- Learned about the operation of electric vehicle systems.
+- Participated in the physical development and assembly of the electric vehicle.
+- Worked on integrating the vehicle's electrical and mechanical components.
+- Gained hands-on workshop experience in electric vehicle development.
+- Learned about the vehicle's operating principles and system integration.
 
-Key Components Studied
+Key EV Systems
 
-- Battery pack
-- Electric motor
-- Motor controller
-- Drivetrain and transmission
-- Electrical connections and control systems
+- Battery and power supply
+- Electric motor and motor controller
+- Drivetrain and mechanical assembly
+- Electrical wiring and connections
 
 Skills Gained
 
-- Hands-on workshop experience
-- Electric vehicle system understanding
+- Practical electric vehicle development
 - Electrical and mechanical integration
-- Practical problem-solving
+- Workshop assembly and troubleshooting
+- Teamwork and engineering problem-solving
 
-Project Details
+Training
 
-Project: Electric Vehicle Design & Development
-Training: Capabl EV Saksham
+Program: Capabl EV Saksham
 Duration: March–April 2024
 
-Project Status
+Project Outcome
 
-Practical project experience. Detailed component specifications, photographs, and implementation details can be added as available.
+Gained practical experience in building a real electric vehicle and understanding the integration of its major systems.
+
+Author
+
+Surya S
