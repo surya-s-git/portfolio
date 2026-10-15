@@ -1,6 +1,6 @@
 
   Project: AI and IoT-Based Smart Irrigation System
-  Board: ESP32 DevKit
+  Board: ESP32 
   IDE: Arduino IDE
 
   Features:
