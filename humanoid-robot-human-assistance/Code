@@ -1,0 +1,178 @@
+
+
+clc;
+clear;
+close all;
+
+%% ==========================================================
+%% 1️⃣ LOAD PREDEFINED ROBOT MODELS
+%% ==========================================================
+
+disp('Loading Robot Models...');
+
+ur10   = loadrobot("universalUR10", "DataFormat", "row", "Gravity", [0 0 -9.81]);
+kinova = loadrobot("kinovaGen3", "DataFormat", "row", "Gravity", [0 0 -9.81]);
+atlas  = loadrobot("atlas", "DataFormat", "row", "Gravity", [0 0 -9.81]);
+
+disp('Models Loaded Successfully.');
+
+%% ==========================================================
+%% 2️⃣ DISPLAY JOINT TYPES
+%% ==========================================================
+
+function showJointTypes(robot, robotName)
+    fprintf('\nJoint Types in %s:\n', robotName);
+    for i = 1:length(robot.Bodies)
+        joint = robot.Bodies{i}.Joint;
+        fprintf('Body: %-25s Joint Type: %s\n', ...
+            robot.Bodies{i}.Name, joint.Type);
+    end
+end
+
+showJointTypes(ur10, "UR10");
+showJointTypes(kinova, "Kinova Gen3");
+showJointTypes(atlas, "Atlas Humanoid");
+
+%% ==========================================================
+%% 3️⃣ REVOLUTE JOINT EXAMPLE – UR10
+%% ==========================================================
+
+figure('Name', 'Revolute Joint Example - UR10');
+configUR = homeConfiguration(ur10);
+show(ur10, configUR);
+title('UR10 - Industrial Robot (All Revolute Joints)');
+view(135,20);
+axis equal;
+grid on;
+
+%% ==========================================================
+%% 4️⃣ PRISMATIC JOINT EXAMPLE
+%% ==========================================================
+
+disp('Creating Custom Prismatic Joint Robot...');
+
+prismaticRobot = rigidBodyTree("DataFormat","row");
+
+body = rigidBody("slider");
+joint = rigidBodyJoint("prismaticJoint","prismatic");
+joint.JointAxis = [0 0 1];
+body.Joint = joint;
+addBody(prismaticRobot, body, "base");
+
+figure('Name','Prismatic Joint Example');
+show(prismaticRobot, [0.3]);
+title('Prismatic Joint (Linear Motion)');
+view(120,15);
+grid on;
+
+%% ==========================================================
+%% 5️⃣ CYLINDRICAL JOINT (REVOLUTE + PRISMATIC)
+%% ==========================================================
+
+disp('Creating Cylindrical Joint Example...');
+
+cylRobot = rigidBodyTree("DataFormat","row");
+
+body1 = rigidBody("rotPart");
+joint1 = rigidBodyJoint("revJoint","revolute");
+joint1.JointAxis = [0 0 1];
+body1.Joint = joint1;
+addBody(cylRobot, body1, "base");
+
+body2 = rigidBody("slidePart");
+joint2 = rigidBodyJoint("prisJoint","prismatic");
+joint2.JointAxis = [0 0 1];
+body2.Joint = joint2;
+addBody(cylRobot, body2, "rotPart");
+
+figure('Name','Cylindrical Joint Example');
+show(cylRobot, [pi/4 0.2]);
+title('Cylindrical Joint (Rotation + Translation)');
+view(120,20);
+grid on;
+
+%% ==========================================================
+%% 6️⃣ SPHERICAL JOINT – ATLAS HUMANOID
+%% ==========================================================
+
+figure('Name','Atlas Humanoid Robot - Full 3D Model');
+configAtlas = homeConfiguration(atlas);
+show(atlas, configAtlas);
+title('Atlas Humanoid Robot - Full 3D Structure');
+view(135,20);
+axis equal;
+grid on;
+
+%% ==========================================================
+%% 7️⃣ CREATE CUSTOM OPTIMUS-LIKE HUMANOID (STATIC)
+%% ==========================================================
+
+disp('Creating Custom Optimus-like Humanoid Robot...');
+
+optimus = rigidBodyTree('DataFormat','row','Gravity',[0 0 -9.81]);
+
+function addLimb(tree,parent,bodyName,jointName,jointType,jointAxis,transform,meshType,meshDims)
+    body = rigidBody(bodyName);
+    joint = rigidBodyJoint(jointName,jointType);
+    joint.JointAxis = jointAxis;
+    setFixedTransform(joint,transform);
+    body.Joint = joint;
+    
+    if strcmp(meshType,'box')
+        addCollision(body,'box',meshDims);
+    elseif strcmp(meshType,'cylinder')
+        addCollision(body,'cylinder',meshDims);
+    end
+    
+    addBody(tree,body,parent);
+end
+
+% Torso
+torso = rigidBody('torso');
+addCollision(torso,'box',[0.3 0.2 0.5]);
+addBody(optimus,torso,'base');
+
+% Head
+addLimb(optimus,'torso','neck','neck_joint','revolute',[0 0 1],trvec2tform([0 0 0.5]),'cylinder',[0.1 0.1]);
+addLimb(optimus,'neck','head','head_joint','revolute',[1 0 0],trvec2tform([0 0 0.1]),'box',[0.2 0.2 0.2]);
+
+% Left Arm
+addLimb(optimus,'torso','l_shoulder','l_shoulder_joint','revolute',[1 0 0],trvec2tform([0.2 0 0.4]),'cylinder',[0.05 0.3]);
+addLimb(optimus,'l_shoulder','l_elbow','l_elbow_joint','revolute',[1 0 0],trvec2tform([0 0 -0.3]),'cylinder',[0.05 0.25]);
+addLimb(optimus,'l_elbow','l_wrist','l_wrist_joint','revolute',[0 1 0],trvec2tform([0 0 -0.25]),'box',[0.1 0.1 0.05]);
+
+% Right Arm
+addLimb(optimus,'torso','r_shoulder','r_shoulder_joint','revolute',[1 0 0],trvec2tform([-0.2 0 0.4]),'cylinder',[0.05 0.3]);
+addLimb(optimus,'r_shoulder','r_elbow','r_elbow_joint','revolute',[1 0 0],trvec2tform([0 0 -0.3]),'cylinder',[0.05 0.25]);
+addLimb(optimus,'r_elbow','r_wrist','r_wrist_joint','revolute',[0 1 0],trvec2tform([0 0 -0.25]),'box',[0.1 0.1 0.05]);
+
+% Left Leg
+addLimb(optimus,'torso','l_hip','l_hip_joint','revolute',[1 0 0],trvec2tform([0.1 0 -0.3]),'cylinder',[0.08 0.4]);
+addLimb(optimus,'l_hip','l_knee','l_knee_joint','revolute',[1 0 0],trvec2tform([0 0 -0.4]),'cylinder',[0.08 0.35]);
+addLimb(optimus,'l_knee','l_ankle','l_ankle_joint','revolute',[0 1 0],trvec2tform([0 0 -0.35]),'box',[0.15 0.1 0.05]);
+
+% Right Leg
+addLimb(optimus,'torso','r_hip','r_hip_joint','revolute',[1 0 0],trvec2tform([-0.1 0 -0.3]),'cylinder',[0.08 0.4]);
+addLimb(optimus,'r_hip','r_knee','r_knee_joint','revolute',[1 0 0],trvec2tform([0 0 -0.4]),'cylinder',[0.08 0.35]);
+addLimb(optimus,'r_knee','r_ankle','r_ankle_joint','revolute',[0 1 0],trvec2tform([0 0 -0.35]),'box',[0.15 0.1 0.05]);
+
+disp('Custom Optimus-like Humanoid Created.');
+
+%% ==========================================================
+%% 8️⃣ DISPLAY FULL OPTIMUS-LIKE HUMANOID 3D MODEL
+%% ==========================================================
+
+figure('Name','Optimus-like Humanoid - Full 3D Model');
+configOptimus = homeConfiguration(optimus);
+show(optimus, configOptimus);
+title('Optimus-like Humanoid Robot - Full 3D Static Model');
+view(135,20);
+axis equal;
+grid on;
+
+%% ==========================================================
+%% 9️⃣ INTERACTIVE GUI (Optional for Teaching)
+%% ==========================================================
+
+disp('Launching Interactive GUI...');
+interactiveRigidBodyTree(optimus);
